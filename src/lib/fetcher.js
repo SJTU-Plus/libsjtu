@@ -22,7 +22,7 @@ export const getLibraryData = async (onSuccess, onFail) =>
   axiosGet(
     libraryUrl,
     (data) => {
-      const formatted = data.map((e) => ({ name: e.areaName, rest: e.max - e.inCounter, max: e.max }));
+      const formatted = data.numbers.map((e) => ({ name: e.areaName, rest: e.max - e.inCounter, max: e.max }));
       onSuccess && onSuccess(formatted);
     },
     onFail
