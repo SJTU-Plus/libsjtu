@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const libraryUrl = process.env.REACT_APP_LIBRARY_PROXY;
-const canteenUrl = 'https://canteen.sjtu.edu.cn/CARD/Ajax/Place';
-const canteenDetailUrl = (id) => `https://canteen.sjtu.edu.cn/CARD/Ajax/PlaceDetails/${id}`;
+const libraryUrl = '/api/sjtu/library';
+const canteenUrl = '/api/sjtu/canteen';
+const canteenDetailUrl = (id) => `/api/sjtu/canteen/${id}`;
 
 const formatCanteenData = (list) => list.map((e) => ({ name: e.Name, rest: e.Seat_s - e.Seat_u, max: e.Seat_s, id: e.Id }));
 
@@ -22,10 +22,7 @@ export const getLibraryData = async (onSuccess, onFail) =>
   axiosGet(
     libraryUrl,
     (data) => {
-      const dataLibRaw = data;
-      const dataLibMatcher = dataLibRaw.match(/CountPerson\((.*)\)/);
-      const dataLib = dataLibMatcher.length > 1 ? JSON.parse(dataLibMatcher[1]).numbers : [];
-      const formatted = dataLib.map((e) => ({ name: e.areaName, rest: e.max - e.inCounter, max: e.max }));
+      const formatted = data.map((e) => ({ name: e.areaName, rest: e.max - e.inCounter, max: e.max }));
       onSuccess && onSuccess(formatted);
     },
     onFail
